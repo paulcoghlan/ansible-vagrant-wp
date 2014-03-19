@@ -1,5 +1,10 @@
-ansible-wp
-==========
+ansible-vagrant-wp
+==================
+Deploy a WordPress development environment to your local machine using Vagrant, then deploy dev, test and production instances to EC2 using Ansible.
+
+Deploys Ubuntu 12.04 with MySQL, php-fpm and Nginx.
+
+Based on <https://github.com/Varying-Vagrant-Vagrants/VVV>
 
 ##Local Development using Vagrant
 1. Install VirtualBox <https://www.virtualbox.org/> and Vagrant <http://www.vagrantup.com/>
@@ -21,4 +26,5 @@ ansible-wp
 
 	 `ansible-playbook -i dev cms.yml`           
 1. Visit running instance at <http://cms.dev>           
+
 
