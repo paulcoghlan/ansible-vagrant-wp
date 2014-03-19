@@ -1,0 +1,16 @@
+---
+- hosts: all
+  vars:
+    env:
+      DEBIAN_FRONTEND: "noninteractive"
+  sudo: yes # On EC2 nodes, this is automatically passwordless.
+  gather_facts: True  #We need to re-enable this, as we turned it off earlier.
+  tasks:
+    - name: ensure ntpd is at the latest version
+      command: apt-get -y install ntp
+  roles:
+    - { role: nginx, wibble: true }
+    - { role: php-fpm, wibble: true }
+    - { role: mysql, wibble: true }
+    - { role: wordpress, wibble: true }
+

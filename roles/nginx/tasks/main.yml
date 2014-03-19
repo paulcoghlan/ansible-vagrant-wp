@@ -1,0 +1,8 @@
+---
+ - name: Update apt
+   command: apt-get update
+
+ - name: install Nginx
+   command: apt-get -y install nginx 
+
+

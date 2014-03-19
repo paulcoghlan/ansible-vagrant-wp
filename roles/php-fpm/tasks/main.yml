@@ -1,0 +1,20 @@
+---
+- name: Install php-fpm and deps 
+  command: "apt-get -y install {{ item }}" 
+  with_items:
+    - php5-mysql
+    - php5-fpm
+    - php5-cli
+    - php5-memcache
+
+- name: Disable default pool
+  command: mv /etc/php5/fpm/pool.d/www.conf /etc/php5/fpm/pool.d/www.conf.disabled creates=/etc/php5/fpm/pool.d/www.conf.disabled
+  notify: restart php-fpm
+
+- name: Copy php-custom.ini configuration
+  template: src=php-custom.ini dest=/etc/php5/fpm/conf.d/
+  notify: restart php-fpm
+
+- name: Copy php-fpm configuration
+  template: src=wordpress.conf dest=/etc/php5/fpm/pool.d/
+  notify: restart php-fpm

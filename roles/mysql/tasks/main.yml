@@ -1,0 +1,26 @@
+---
+- name: Copy mysql passwords
+  template: src=mysql-passwords.j2 dest=/root/mysql-passwords.txt
+
+- name: Set root password
+  command: sudo debconf-set-selections /root/mysql-passwords.txt
+
+- name: Update apt-get after set password
+  command: apt-get update
+
+- name: Install Mysql package
+  command: apt-get -y install mysql-server-5.5
+
+- name: Install MySql Python package so we can create users, etc
+  command: apt-get -y install python-mysqldb
+
+- name: Create Mysql configuration file
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+  notify:
+  - restart mysql
+
+- name: Copy root.cnf
+  template: src=root-my.j2 dest=~/.my.cnf
+
+- name: Start Mysql Service
+  service: name=mysql state=started enabled=true

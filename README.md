@@ -1,4 +1,8 @@
-ansible-vagrant-wp
-==================
+ansible-wp
+==========
+Install Vagrant hosts plugin
 
-Develop WordPress themes, plugins in Ubuntu Vagrant container - deploy to EC2 using Ansible
+vagrant up 
+
+AWS_ACCESS_KEY=AxxxxxxA AWS_SECRET_KEY="9xxxxxxxxxxxx" ansible-playbook -i dev ec2-provision.yml 
+

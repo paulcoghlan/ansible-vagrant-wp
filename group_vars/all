@@ -1,0 +1,14 @@
+---
+# Which version of Wordpress to deploy
+wp_version: 3.8.1
+wp_sha256sum: 2c5c56dc77cc891eca3782a04e2706dcd460a7ebd96de03221bdc414b7eb3992
+
+# These are the Wordpress database settings
+wp_db_name: wordpress
+wp_db_user: wordpress
+wp_db_password: secret
+
+# You shouldn't need to change this.
+mysql_port: 3306
+mysql_root_password: root
+

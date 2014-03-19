@@ -1,0 +1,15 @@
+[local]
+cms.local  ansible_ssh_host=192.168.33.20 ansible_ssh_user=vagrant ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key
+
+[local:vars]
+server_hostname=cms.local
+
+[cms:vars]
+server_hostname=cms.dev
+
+[cms]
+ec2-54-84-84-237.compute-1.amazonaws.com ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/ansible-fastday.pem
+ec2-54-84-180-63.compute-1.amazonaws.com ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/ansible-fastday.pem
+ec2-54-85-129-58.compute-1.amazonaws.com ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/ansible-fastday.pem
+
+
