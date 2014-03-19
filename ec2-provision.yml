@@ -13,7 +13,7 @@
       image: ami-a73264ce
       region: us-east-1
     vars_files:
-      - .aws_private_vars.yml
+      - .private_vars.yml
     tasks:
       - name: Launch new Instance
         local_action: ec2 instance_tags="Name=wp-{{ env }}" aws_access_key={{ aws_access_key }} aws_secret_key={{ aws_secret_key }} group={{ security_group }} instance_type={{ instance_type}} image={{ image }} wait=true region={{ region }} keypair={{ keypair }}

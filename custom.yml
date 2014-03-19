@@ -1,0 +1,24 @@
+---
+- hosts: all
+  sudo: yes # On EC2 nodes, this is automatically passwordless.
+  vars_files:
+    - .private_vars.yml
+  tasks:
+    - name: Create /root/.ssh
+      file: dest=/root/.ssh mode=700 owner=root group=root state=directory
+
+    - name: check if known_hosts exists
+      stat: path=~{{ ansible_ssh_user }}/.ssh/known_hosts
+      register: known_hosts_file
+
+    - name: ensure github.com in known host
+      shell: ssh-keyscan -H github.com >> ~{{ ansible_ssh_user }}/.ssh/known_hosts
+      when: known_hosts_file.stat.exists == false
+
+#    - name: Test SSH
+#      command: ssh -o ForwardAgent=yes -vvv -T git@github.com
+
+    - name: Clone custom theme/plugins
+      git: repo={{ custom_repo }} ssh_opts="-o ForwardAgent=yes"
+           dest=/srv/www/custom
+

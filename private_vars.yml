@@ -2,5 +2,4 @@
 aws_access_key: <Your AWS Access Key>
 aws_secret_key: "<Your AWS Secret Key>"
 keypair: <Your AWS Keypair Name>
-
-
+custom_repo: git@github.com:FastDayDev/platform.git

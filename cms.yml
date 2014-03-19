@@ -5,6 +5,8 @@
       DEBIAN_FRONTEND: "noninteractive"
   sudo: yes # On EC2 nodes, this is automatically passwordless.
   gather_facts: True  #We need to re-enable this, as we turned it off earlier.
+  vars_files:
+    - .private_vars.yml
   tasks:
     - name: update various utils
       command: "apt-get -y install {{ item }}"

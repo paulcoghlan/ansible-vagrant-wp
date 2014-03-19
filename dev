@@ -1,5 +1,6 @@
 [local]
-cms.local  ansible_ssh_host=192.168.33.20 ansible_ssh_user=vagrant ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key
+cms.local  ansible_ssh_host=192.168.33.20 ansible_ssh_user=vagrant 
+#ansible_ssh_private_key_file=~/.vagrant.d/insecure_private_key
 
 [local:vars]
 server_hostname=cms.local
