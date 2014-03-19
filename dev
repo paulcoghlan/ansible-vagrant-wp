@@ -8,8 +8,5 @@ server_hostname=cms.local
 server_hostname=cms.dev
 
 [cms]
-ec2-54-84-84-237.compute-1.amazonaws.com ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/ansible-fastday.pem
-ec2-54-84-180-63.compute-1.amazonaws.com ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/ansible-fastday.pem
-ec2-54-85-129-58.compute-1.amazonaws.com ansible_ssh_user=ubuntu ansible_ssh_private_key_file=~/.ssh/ansible-fastday.pem
 
 
