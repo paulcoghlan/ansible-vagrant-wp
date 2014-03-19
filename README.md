@@ -20,11 +20,15 @@ Based on <https://github.com/Varying-Vagrant-Vagrants/VVV>
       
    
 ## Deploy to EC2
+1. Rename aws_private_vars.yml to .aws_private_vars.yml, populate with your AWS access key, secret key and keypair name.  Dot file with your private AWS credentials won't get checked in :-)
 1. Provision EC2 instance:
-   ansible-playbook -i dev ec2-provision.yml 
+
+   `ansible-playbook -i dev ec2-provision.yml` 
+
 1. Install WordPress on EC2 instance using Ansible Playbook:
 
 	 `ansible-playbook -i dev cms.yml`           
+
 1. Visit running instance at <http://cms.dev>           
 
 
