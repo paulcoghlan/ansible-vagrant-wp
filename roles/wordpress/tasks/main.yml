@@ -1,4 +1,10 @@
 ---
+- name: update various utils
+  command: "apt-get -y install {{ item }}"
+  with_items:
+    - git
+    - curl
+
 - name: Make /srv/www
   file: dest=/srv/www mode=755 owner=www-data group=www-data state=directory
 
@@ -35,4 +41,22 @@
 - name: Copy wp nginx configuration
   template: src=nginx-wp-common.conf dest=/etc/nginx/nginx-wp-common.conf
   notify: restart nginx
+
+- name: Composer Install (for wp-cli)
+  shell:
+    curl -L https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /root/wp-cli.phar
+    creates=/root/wp-cli.phar
+
+- name: wp-cli Clone/Update
+  git: repo=git://github.com/wp-cli/wp-cli.git
+       dest=/srv/www/wp-cli
+
+- name: wp-cli symlink binary
+  command: ln -sf /srv/www/wp-cli/bin/wp /usr/local/bin/wp creates=/usr/local/bin/wp
+
+#- name: wp-cli install
+#  command: chdir=/srv/www/wp-cli  composer install
+
+- name: Install WP site
+  command: chdir=/srv/www/wordpress /usr/bin/php /root/wp-cli.phar core install --url={{ server_hostname }} --quiet --title='{{ site_name }}' --admin_name={{ admin_name }} --admin_email={{ admin_email }} --admin_password={{ admin_password }} --allow-root
 

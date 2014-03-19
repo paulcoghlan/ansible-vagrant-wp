@@ -12,3 +12,8 @@ wp_db_password: secret
 mysql_port: 3306
 mysql_root_password: root
 
+site_name: 'Local WordPress Dev'
+admin_name: admin
+admin_email: admin@admin.com
+admin_password: admin
+
