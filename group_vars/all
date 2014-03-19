@@ -17,3 +17,8 @@ admin_name: admin
 admin_email: admin@admin.com
 admin_password: admin
 
+base_plugins:
+    - json-api
+    - advanced-custom-fields
+    - custom-post-template
+

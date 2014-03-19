@@ -32,17 +32,18 @@
 - name: Change ownership of Wordpress installation
   file: path=/srv/www/wordpress/ owner=www-data group=www-data state=directory recurse=yes
 
-- name: Copy nginx configuration for wordpress site
+- name: Copy /etc/nginx/sites-enabled/default.conf
   template: src=sites/default.conf dest=/etc/nginx/sites-enabled/default.conf
 
-- name: Copy base nginx configuration
+- name: Copy /etc/nginx/nginx.conf
   template: src=nginx.conf dest=/etc/nginx/nginx.conf
 
 - name: Copy wp nginx configuration
   template: src=nginx-wp-common.conf dest=/etc/nginx/nginx-wp-common.conf
   notify: restart nginx
 
-- name: Composer Install (for wp-cli)
+# wp-cli instructions from http://wp-cli.org/
+- name: wp-cli.phar download
   shell:
     curl -L https://raw.github.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /root/wp-cli.phar
     creates=/root/wp-cli.phar
@@ -51,12 +52,13 @@
   git: repo=git://github.com/wp-cli/wp-cli.git
        dest=/srv/www/wp-cli
 
-- name: wp-cli symlink binary
-  command: ln -sf /srv/www/wp-cli/bin/wp /usr/local/bin/wp creates=/usr/local/bin/wp
-
-#- name: wp-cli install
-#  command: chdir=/srv/www/wp-cli  composer install
-
 - name: Install WP site
   command: chdir=/srv/www/wordpress /usr/bin/php /root/wp-cli.phar core install --url={{ server_hostname }} --quiet --title='{{ site_name }}' --admin_name={{ admin_name }} --admin_email={{ admin_email }} --admin_password={{ admin_password }} --allow-root
 
+- name: Install WP Plugins
+  command: chdir=/srv/www/wordpress /usr/bin/php /root/wp-cli.phar plugin install {{ item }} --allow-root
+  with_items: base_plugins
+
+- name: Activate WP Plugins
+  command: chdir=/srv/www/wordpress /usr/bin/php /root/wp-cli.phar plugin activate {{ item }} --allow-root
+  with_items: base_plugins
