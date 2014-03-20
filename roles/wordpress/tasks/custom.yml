@@ -21,3 +21,12 @@
 - name: Change ownership of custom themes/plugins
   file: path=/srv/www/custom owner=www-data group=www-data state=directory recurse=yes
 
+# copy each file over that matches the given pattern
+- name: Link themes to wordpress
+  file: src=/srv/www/custom/themes/{{ custom_theme }} dest=/srv/www/wordpress/wp-content/themes/{{ custom_theme }} owner=www-data group=www-data state=link
+  when: custom_theme is defined
+
+- name: Link plugins to wordpress
+  file: src=/srv/www/custom/plugins/{{ item }} dest=/srv/www/wordpress/wp-content/plugins/{{ item }} owner=www-data group=www-data state=link
+  with_items: custom_plugins
+
