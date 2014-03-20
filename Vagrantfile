@@ -10,6 +10,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
   config.vm.hostname = "cms.local"
 
+  # Store the current version of Vagrant for use in conditionals when dealing
+  # with possible backward compatible issues.
+  vagrant_version = Vagrant::VERSION.sub(/^v/, '')
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "precise32"
@@ -42,6 +45,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
+
+  # /srv/www/
+  #
+  # If a www directory exists in the same directory as your Vagrantfile, a mapped directory
+  # inside the VM will be created that acts as the default location for nginx sites. Put all
+  # of your project files here that you want to access through the web server
+  if vagrant_version >= "1.3.0"
+     config.vm.synced_folder "www/", "/srv/www/", :owner => "www-data", :mount_options => [ "dmode=775", "fmode=774" ]
+  else
+     config.vm.synced_folder "www/", "/srv/www/", :owner => "www-data", :extra => 'dmode=775,fmode=774'
+  end
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
