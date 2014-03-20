@@ -62,3 +62,7 @@
 - name: Activate WP Plugins
   command: chdir=/srv/www/wordpress /usr/bin/php /root/wp-cli.phar plugin activate {{ item }} --allow-root
   with_items: base_plugins
+
+# Include custom git repo if defined in .private_vars.yml
+- include: custom.yml
+  when: custom_repo is defined
