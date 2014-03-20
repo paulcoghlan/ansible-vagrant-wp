@@ -74,6 +74,12 @@ define('WPLANG', '');
  */
 define('WP_DEBUG', false);
 
+/**
+ * AWS Plugin Settings
+ */
+define( 'AWS_ACCESS_KEY_ID', '{{ s3_access_key }}' );
+define( 'AWS_SECRET_ACCESS_KEY', '{{ s3_secret_key }}' );
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */

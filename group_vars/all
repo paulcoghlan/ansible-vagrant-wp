@@ -22,5 +22,6 @@ base_plugins:
     - advanced-custom-fields
     - custom-post-template
     - wordpress-importer
-
+    - amazon-web-services
+    - amazon-s3-and-cloudfront
 

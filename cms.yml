@@ -12,6 +12,7 @@
       command: "apt-get -y install {{ item }}"
       with_items:
         - ntp
+        - unzip
 
   roles:
     - { role: nginx, wibble: true }

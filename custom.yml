@@ -19,6 +19,6 @@
 #      command: ssh -o ForwardAgent=yes -vvv -T git@github.com
 
     - name: Clone custom theme/plugins
-      git: repo={{ custom_repo }} ssh_opts="-o ForwardAgent=yes"
+      git: repo={{ custom_repo }}
            dest=/srv/www/custom
 
