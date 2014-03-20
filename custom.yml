@@ -4,9 +4,6 @@
   vars_files:
     - .private_vars.yml
   tasks:
-    - name: Create /root/.ssh
-      file: dest=/root/.ssh mode=700 owner=root group=root state=directory
-
     - name: check if known_hosts exists
       stat: path=~{{ ansible_ssh_user }}/.ssh/known_hosts
       register: known_hosts_file
@@ -15,10 +12,17 @@
       shell: ssh-keyscan -H github.com >> ~{{ ansible_ssh_user }}/.ssh/known_hosts
       when: known_hosts_file.stat.exists == false
 
-#    - name: Test SSH
-#      command: ssh -o ForwardAgent=yes -vvv -T git@github.com
+# forward agent won't work with root - see https://github.com/ansible/ansible/issues/4378
+# and www-data doesn't have a sensible homedir, so for now just checkout as vagrant user
+# and fixup permissions
+    - name: Make /srv/www/custom
+      file: dest=/srv/www/custom mode=755 owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} state=directory
 
-    - name: Clone custom theme/plugins
-      git: repo={{ custom_repo }}
+    - name: Clone custom themes/plugins
+      sudo: no
+      git: repo={{ custom_repo }} accept_hostkey=true
            dest=/srv/www/custom
+
+    - name: Change ownership of custom themes/plugins
+      file: path=/srv/www/custom owner=www-data group=www-data state=directory recurse=yes
 

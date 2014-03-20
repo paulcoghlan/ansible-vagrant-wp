@@ -23,5 +23,5 @@ base_plugins:
     - custom-post-template
     - wordpress-importer
     - amazon-web-services
-    - amazon-s3-and-cloudfront
+#    - amazon-s3-and-cloudfront
 
