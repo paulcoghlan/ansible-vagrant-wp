@@ -10,23 +10,30 @@
 # forward agent won't work with root - see https://github.com/ansible/ansible/issues/4378
 # and www-data doesn't have a sensible homedir, so for now just checkout as vagrant user
 # and fixup permissions
-- name: Make /srv/www/custom
-  file: dest=/srv/www/custom mode=755 owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} state=directory
+- name: Make {{ custom_root }}
+  file: dest={{ custom_root }} mode=755 owner={{ ansible_ssh_user }} group={{ ansible_ssh_user }} state=directory
 
 - name: Clone custom themes/plugins
   sudo: no
   git: repo={{ custom_repo }} accept_hostkey=true
-       dest=/srv/www/custom
+       dest={{ custom_root }}
 
 - name: Change ownership of custom themes/plugins
-  file: path=/srv/www/custom owner=www-data group=www-data state=directory recurse=yes
+  file: path={{ custom_root }} owner=www-data group=www-data state=directory recurse=yes
 
 # copy each file over that matches the given pattern
 - name: Link themes to wordpress
-  file: src=/srv/www/custom/themes/{{ custom_theme }} dest=/srv/www/wordpress/wp-content/themes/{{ custom_theme }} owner=www-data group=www-data state=link
+  file: src={{ custom_root }}/themes/{{ custom_theme }} dest={{ wp_root }}/wp-content/themes/{{ custom_theme }} owner=www-data group=www-data state=link
+  when: custom_theme is defined
+
+- name: Activate custom WP plugins
+  command: chdir={{ wp_root }} /usr/bin/php /root/wp-cli.phar theme activate {{ custom_theme }} --allow-root
   when: custom_theme is defined
 
 - name: Link plugins to wordpress
-  file: src=/srv/www/custom/plugins/{{ item }} dest=/srv/www/wordpress/wp-content/plugins/{{ item }} owner=www-data group=www-data state=link
+  file: src={{ custom_root }}/plugins/{{ item }} dest={{ wp_root }}/wp-content/plugins/{{ item }} owner=www-data group=www-data state=link
   with_items: custom_plugins
 
+- name: Activate custom WP plugins
+  command: chdir={{ wp_root }} /usr/bin/php /root/wp-cli.phar plugin activate {{ item }} --allow-root
+  with_items: custom_plugins

@@ -13,7 +13,7 @@
            sha256sum="{{ wp_sha256sum }}"
 
 - name: Extract archive
-  command: chdir=/srv/www/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates=/srv/www/wordpress
+  command: chdir=/srv/www/ /bin/tar xvf wordpress-{{ wp_version }}.tar.gz creates={{ wp_root }}
 
 - name: Fetch random salts for Wordpress config
   local_action: command curl https://api.wordpress.org/secret-key/1.1/salt/
@@ -27,10 +27,10 @@
   mysql_user: name={{ wp_db_user }} password={{ wp_db_password }} priv={{ wp_db_name }}.*:ALL host='localhost' state=present
 
 - name: Copy Wordpress config file
-  template: src=wp-config.php dest=/srv/www/wordpress/
+  template: src=wp-config.php dest={{ wp_root }}/
 
 - name: Change ownership of Wordpress installation
-  file: path=/srv/www/wordpress/ owner=www-data group=www-data state=directory recurse=yes
+  file: path={{ wp_root }}/ owner=www-data group=www-data state=directory recurse=yes
 
 - name: Copy /etc/nginx/sites-enabled/default.conf
   template: src=sites/default.conf dest=/etc/nginx/sites-enabled/default.conf
@@ -53,14 +53,14 @@
        dest=/srv/www/wp-cli
 
 - name: Install WP site
-  command: chdir=/srv/www/wordpress /usr/bin/php /root/wp-cli.phar core install --url={{ server_hostname }} --quiet --title='{{ site_name }}' --admin_name={{ admin_name }} --admin_email={{ admin_email }} --admin_password={{ admin_password }} --allow-root
+  command: chdir={{ wp_root }} /usr/bin/php /root/wp-cli.phar core install --url={{ server_hostname }} --quiet --title='{{ site_name }}' --admin_name={{ admin_name }} --admin_email={{ admin_email }} --admin_password={{ admin_password }} --allow-root
 
 - name: Install WP Plugins
-  command: chdir=/srv/www/wordpress /usr/bin/php /root/wp-cli.phar plugin install {{ item }} --allow-root
+  command: chdir={{ wp_root }} /usr/bin/php /root/wp-cli.phar plugin install {{ item }} --allow-root
   with_items: base_plugins
 
 - name: Activate WP Plugins
-  command: chdir=/srv/www/wordpress /usr/bin/php /root/wp-cli.phar plugin activate {{ item }} --allow-root
+  command: chdir={{ wp_root }} /usr/bin/php /root/wp-cli.phar plugin activate {{ item }} --allow-root
   with_items: base_plugins
 
 # Include custom git repo if defined in .private_vars.yml

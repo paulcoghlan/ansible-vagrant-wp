@@ -19,5 +19,5 @@
     - { role: nginx, wibble: true }
     - { role: php-fpm, wibble: true }
     - { role: mysql, wibble: true }
-    - { role: wordpress, wibble: true }
+    - { role: wordpress, wp_root: /srv/www/wordpress, custom_root: /srv/www/custom }
 
