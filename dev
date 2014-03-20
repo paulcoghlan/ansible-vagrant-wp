@@ -4,9 +4,11 @@ cms.local  ansible_ssh_host=192.168.33.20 ansible_ssh_user=vagrant
 
 [local:vars]
 server_hostname=cms.local
+media_bucket=uploads.cms.local
 
 [cms:vars]
 server_hostname=cms.dev
+media_bucket=uploads.cms.dev
 
 [cms]
 

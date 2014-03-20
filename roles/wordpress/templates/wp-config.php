@@ -80,6 +80,11 @@ define('WP_DEBUG', false);
 define( 'AWS_ACCESS_KEY_ID', '{{ s3_access_key }}' );
 define( 'AWS_SECRET_ACCESS_KEY', '{{ s3_secret_key }}' );
 
+/**
+ * Amazon_S3_And_CloudFront config
+ */
+define( 'bucket', '{{ media_bucket }}' );
+
 /* That's all, stop editing! Happy blogging. */
 
 /** Absolute path to the WordPress directory. */
